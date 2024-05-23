@@ -24,14 +24,30 @@ sudo mv /tmp/eksctl /usr/local/bin
 
 **Create and push a Docker image to ECR**
 (CREATE A REPO IN ECR) aws ecr create-repository --repository-name hello-world-repo --region us-west-2
+
 (BUILD THE DOCKER IMAGE) docker build -t hello-world .
+
 (CREATE A TAG) aws_account_id=$(aws sts get-caller-identity --query Account --output text)
 docker tag hello-world:latest $aws_account_id.dkr.ecr.us-west-2.amazonaws.com/hello-world-repo:latest
+
 (RUN THE AUTHENTICATION) aws ecr get-login-password --region us-west-2 | docker login --username AWS --password-stdin $aws_account_id.dkr.ecr.us-west-2.amazonaws.com
+
 (PUSH THE IMAGE TO ECR) docker push $aws_account_id.dkr.ecr.us-west-2.amazonaws.com/hello-world-repo:latest
 
+**Apply the deployment**
+kubectl apply -f deployment.yaml
 
+**Apply the service**
+kubectl apply -f service.yaml
 
+**Check it is running**
+kubectl get deployments
+kubectl get services
 
+**Obtain the external ip**
+kubectl get service hello-world-service
+
+**Run the webapp**
+Browse to the app by using the external ip 
 
 
