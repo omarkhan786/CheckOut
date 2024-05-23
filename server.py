@@ -8,9 +8,9 @@ class HelloWorldHandler(BaseHTTPRequestHandler):
         self.wfile.write(b"Hello, World!")
 
 def run(server_class=HTTPServer, handler_class=HelloWorldHandler):
-    server_address = ('', 80)
+    server_address = ('', 8080)
     httpd = server_class(server_address, handler_class)
-    print("Starting httpd server on port 80")
+    print("Starting httpd server on port 8080")
     httpd.serve_forever()
 
 if __name__ == "__main__":
